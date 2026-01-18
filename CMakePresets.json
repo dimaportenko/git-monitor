@@ -1,0 +1,12 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "default",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "/Users/dmitriyportenko/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      }
+    }
+  ]
+}
