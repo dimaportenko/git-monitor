@@ -1,4 +1,4 @@
-# Git Workflow Monitor (gwm)
+# Git Monitor (gm)
 
 A terminal UI application for monitoring Git-related activities, starting with GitHub Actions workflow status tracking.
 
@@ -59,7 +59,7 @@ This project serves as a hands-on learning exercise for modern C++ development. 
 ## Directory Structure
 
 ```
-gwm/
+gm/
 ├── CMakeLists.txt
 ├── vcpkg.json
 ├── README.md
@@ -95,7 +95,7 @@ gwm/
 │       ├── notifier.hpp
 │       └── notifier.cpp
 ├── include/
-│   └── gwm/
+│   └── gm/
 │       └── version.hpp
 └── tests/
     ├── CMakeLists.txt
@@ -125,7 +125,7 @@ gwm/
 
 ## Configuration
 
-Configuration stored in `~/.config/gwm/config.toml` (or `~/Library/Application Support/gwm/config.toml`):
+Configuration stored in `~/.config/gm/config.toml` (or `~/Library/Application Support/gm/config.toml`):
 
 ```toml
 [general]
@@ -133,7 +133,7 @@ polling_interval_seconds = 60
 notifications_enabled = true
 
 [github]
-token = "ghp_xxxxxxxxxxxx"  # or use GWM_GITHUB_TOKEN env var
+token = "ghp_xxxxxxxxxxxx"  # or use GM_GITHUB_TOKEN env var
 
 [[watch]]
 owner = "username"
@@ -192,7 +192,7 @@ Rate limits: 5000 requests/hour for authenticated requests.
 
 - **Notifications:** Use `osascript` for native Notification Center integration, or `terminal-notifier` (installable via Homebrew) for more features
 - **Compiler:** Apple Clang (Xcode Command Line Tools) or Homebrew LLVM/GCC for full C++23 support
-- **Config location:** `~/Library/Application Support/gwm/` (macOS standard) or `~/.config/gwm/` (XDG standard)
+- **Config location:** `~/Library/Application Support/gm/` (macOS standard) or `~/.config/gm/` (XDG standard)
 
 ### Notification Implementation
 
@@ -233,14 +233,14 @@ cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpk
 cmake --build build
 
 # Run
-./build/gwm
+./build/git-monitor
 ```
 
 ## Dependencies (vcpkg.json)
 
 ```json
 {
-  "name": "gwm",
+  "name": "git-monitor",
   "version": "0.1.0",
   "dependencies": [
     "ftxui",

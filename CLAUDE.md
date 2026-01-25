@@ -8,7 +8,7 @@ This is a learning project. **Provide code solutions but do not apply changes un
 
 ## Project Overview
 
-Git Workflow Monitor (gwm) - a C++23 terminal UI application for monitoring GitHub Actions workflow status. Built with CMake, vcpkg, and FTXUI. Target platform is macOS.
+Git Monitor (gm) - a C++23 terminal UI application for monitoring GitHub Actions workflow status. Built with CMake, vcpkg, and FTXUI. Target platform is macOS.
 
 ## Build Commands
 
@@ -35,7 +35,7 @@ The planned architecture (currently skeleton):
 - **Core Engine**: Workflow polling, status change detection, event dispatching
 - **GitHub Client**: REST API wrapper with PAT auth and rate limiting
 - **UI Layer (FTXUI)**: Workflow list, status details, settings screens
-- **Config Manager**: TOML config from `~/.config/gwm/config.toml`
+- **Config Manager**: TOML config from `~/.config/gm/config.toml`
 - **Notification Service**: macOS Notification Center via osascript
 
 Planned directory structure under `src/`: `app/`, `config/`, `github/`, `core/`, `ui/`, `notify/`
