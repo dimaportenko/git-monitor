@@ -52,6 +52,7 @@ Planned: `cpp-httplib`, `tomlplusplus`
 - **Includes order**: stdlib → third-party → project headers
 - **Types**: Prefer `std::string_view`, `std::span`, `std::optional`, `std::expected`
 - **FTXUI**: Keep render functions pure, avoid work inside `Renderer` lambdas
+- **Variables**: Do not use single-character variable names; use descriptive names
 
 ## Notes
 
