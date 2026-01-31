@@ -3,6 +3,7 @@
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
 
+#include "config/config.hpp"
 #include "github/types.hpp"
 
 using namespace ftxui;
@@ -73,6 +74,10 @@ Element render_repository(const gm::Repository &repo) {
 }
 
 int main() {
+  // load config
+  auto config = gm::load_config();
+
+  // TUI screen
   auto screen = ScreenInteractive::Fullscreen();
   auto repos = create_mock_data();
 
@@ -99,7 +104,10 @@ int main() {
                // Footer
                separator(),
                hbox({
-                   text("Watching " + std::to_string(repos.size()) + " repos"),
+                   text(config ? "Watching " +
+                                     std::to_string(config->watches.size()) +
+                                     " repos"
+                               : "No config, using mock data."),
                    filler(),
                    text("Next poll: 58s") | dim,
                }),
