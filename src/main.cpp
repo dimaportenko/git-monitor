@@ -14,44 +14,46 @@ std::vector<gm::Repository> create_mock_data() {
   auto now = system_clock::now();
 
   return {
-      {"user",
-       "repo-name",
-       {
-           {"CI Pipeline", gm::WorkflowStatus::Success, now - minutes(12)},
-           {"Deploy Production", gm::WorkflowStatus::Running, now - minutes(2)},
-           {"Nightly Tests", gm::WorkflowStatus::Failure, now - hours(8)},
-       }},
-      {"org",
-       "another-repo",
-       {
-           {"Build & Test", gm::WorkflowStatus::Success, now - hours(1)},
-           {"Security Scan", gm::WorkflowStatus::Pending, now - seconds(30)},
-       }}};
+    { "user",
+      "repo-name",
+      {
+          { "CI Pipeline", gm::WorkflowStatus::Success, now - minutes(12) },
+          { "Deploy Production", gm::WorkflowStatus::Running,
+            now - minutes(2) },
+          { "Nightly Tests", gm::WorkflowStatus::Failure, now - hours(8) },
+      } },
+    { "org",
+      "another-repo",
+      {
+          { "Build & Test", gm::WorkflowStatus::Success, now - hours(1) },
+          { "Security Scan", gm::WorkflowStatus::Pending, now - seconds(30) },
+      } }
+  };
 }
 
 Color status_color(gm::WorkflowStatus status) {
   switch (status) {
-  case gm::WorkflowStatus::Success:
-    return Color::Green;
-  case gm::WorkflowStatus::Failure:
-    return Color::Red;
-  case gm::WorkflowStatus::Running:
-    return Color::Yellow;
-  case gm::WorkflowStatus::Pending:
-    return Color::GrayLight;
-  case gm::WorkflowStatus::Cancelled:
-    return Color::GrayDark;
+    case gm::WorkflowStatus::Success:
+      return Color::Green;
+    case gm::WorkflowStatus::Failure:
+      return Color::Red;
+    case gm::WorkflowStatus::Running:
+      return Color::Yellow;
+    case gm::WorkflowStatus::Pending:
+      return Color::GrayLight;
+    case gm::WorkflowStatus::Cancelled:
+      return Color::GrayDark;
   }
   return Color::White;
 }
 
-Element render_workflow(const gm::WorkflowRun &run, bool is_last) {
+Element render_workflow(gm::WorkflowRun const& run, bool is_last) {
   std::string prefix = is_last ? "└─ ● " : "├─ ● ";
 
   auto status_elem = hbox(
-      {text(gm::status_symbol(run.status)) | color(status_color(run.status)),
-       text(" " + gm::status_text(run.status)) |
-           color(status_color(run.status))});
+      { text(gm::status_symbol(run.status)) | color(status_color(run.status)),
+        text(" " + gm::status_text(run.status)) |
+            color(status_color(run.status)) });
 
   return hbox({
       text(prefix),
@@ -61,7 +63,7 @@ Element render_workflow(const gm::WorkflowRun &run, bool is_last) {
   });
 }
 
-Element render_repository(const gm::Repository &repo) {
+Element render_repository(gm::Repository const& repo) {
   Elements workflow_elements;
 
   for (size_t i = 0; i < repo.runs.size(); ++i) {
@@ -69,8 +71,8 @@ Element render_repository(const gm::Repository &repo) {
     workflow_elements.push_back(render_workflow(repo.runs[i], is_last));
   }
 
-  return vbox({text(repo.owner + "/" + repo.repo) | bold,
-               vbox(workflow_elements), text("")});
+  return vbox({ text(repo.owner + "/" + repo.repo) | bold,
+                vbox(workflow_elements), text("") });
 }
 
 int main() {
@@ -83,7 +85,7 @@ int main() {
 
   auto component = Renderer([&] {
     Elements repo_elements;
-    for (const auto &repo : repos) {
+    for (auto const& repo : repos) {
       repo_elements.push_back(render_repository(repo));
     }
 
