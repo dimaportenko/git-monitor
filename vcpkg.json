@@ -4,6 +4,10 @@
   "dependencies": [
     "ftxui",
     "nlohmann-json",
-    "tomlplusplus"
+    "tomlplusplus",
+    { 
+      "name": "cpp-httplib",
+      "features": ["openssl"]
+    }
   ]
 }

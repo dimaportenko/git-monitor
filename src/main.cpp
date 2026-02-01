@@ -4,6 +4,7 @@
 #include <ftxui/dom/elements.hpp>
 
 #include "config/config.hpp"
+#include "github/client.hpp"
 #include "github/types.hpp"
 
 using namespace ftxui;
@@ -75,13 +76,44 @@ Element render_repository(gm::Repository const& repo) {
                 vbox(workflow_elements), text("") });
 }
 
-int main() {
-  // load config
-  auto config = gm::load_config();
+std::vector<gm::Repository> fetch_repositories(
+    gm::GitHubClient& client,
+    const std::vector<gm::WatchEntry>& watches) {
+  std::vector<gm::Repository> repos;
 
+  for (const auto& watch : watches) {
+    gm::Repository repo;
+    repo.owner = watch.owner;
+    repo.repo = watch.repo;
+
+    auto result = client.fetch_workflow_runs(watch.owner, watch.repo);
+    if (result) {
+      repo.runs = std::move(*result);
+    }
+    repos.push_back(std::move(repo));
+  }
+
+  return repos;
+}
+
+int main() {
   // TUI screen
   auto screen = ScreenInteractive::Fullscreen();
-  auto repos = create_mock_data();
+
+  // load config
+  auto config = gm::load_config();
+  std::vector<gm::Repository> repos;
+  std::string status_text;
+
+  if (config && !config->github_token.empty()) {
+    gm::GitHubClient client(config->github_token);
+    repos = fetch_repositories(client, config->watches);
+    status_text =
+        "Watching " + std::to_string(config->watches.size()) + " repos";
+  } else {
+    repos = create_mock_data();
+    status_text = "No config, using mock data.";
+  }
 
   auto component = Renderer([&] {
     Elements repo_elements;
