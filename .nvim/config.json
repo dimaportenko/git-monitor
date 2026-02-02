@@ -1,7 +1,7 @@
 {
   "commands": {
     "run": "cmake --build build -j 8 && ./build/git-monitor",
-    "debug:build": "cmake -B build -DCMAKE_BUILD_TYPE=Debug",
+    "debug:build": "rm -rf build && cmake --preset default && cmake -B build -DCMAKE_BUILD_TYPE=Debug",
     "cmake:preset": "rm -rf build && cmake --preset default && cmake --build build -j 8"
    }
 }
