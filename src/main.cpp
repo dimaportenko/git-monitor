@@ -18,16 +18,19 @@ std::vector<gm::Repository> create_mock_data() {
     { "user",
       "repo-name",
       {
-          { "CI Pipeline", gm::WorkflowStatus::Success, now - minutes(12) },
-          { "Deploy Production", gm::WorkflowStatus::Running,
+          { "CI Pipeline", "Display Name", gm::WorkflowStatus::Success,
+            now - minutes(12) },
+          { "Deploy Production", "Display Name", gm::WorkflowStatus::Running,
             now - minutes(2) },
-          { "Nightly Tests", gm::WorkflowStatus::Failure, now - hours(8) },
+          { "Nightly Tests", "Display", gm::WorkflowStatus::Failure,
+            now - hours(8) },
       } },
     { "org",
       "another-repo",
       {
-          { "Build & Test", gm::WorkflowStatus::Success, now - hours(1) },
-          { "Security Scan", gm::WorkflowStatus::Pending, now - seconds(30) },
+          { "Build & Test", "", gm::WorkflowStatus::Success, now - hours(1) },
+          { "Security Scan", "", gm::WorkflowStatus::Pending,
+            now - seconds(30) },
       } }
   };
 }
@@ -58,7 +61,7 @@ Element render_workflow(gm::WorkflowRun const& run, bool is_last) {
 
   return hbox({
       text(prefix),
-      text(run.name) | flex,
+      vbox({ text(run.name), text(run.display_title) }) | flex,
       status_elem | size(WIDTH, EQUAL, 14),
       text(gm::time_ago(run.updated_at)) | size(WIDTH, EQUAL, 10) | align_right,
   });

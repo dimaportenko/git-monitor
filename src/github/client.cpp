@@ -90,11 +90,13 @@ GitHubClient::fetch_workflow_runs(const std::string& owner,
 
   try {
     auto json = nlohmann::json::parse(res->body);
+    // debug_log() << "[DEBUG] Parsed JSON: " << json.dump(2) << std::endl;
     std::vector<WorkflowRun> runs;
 
     for (const auto& run : json["workflow_runs"]) {
       WorkflowRun workflow_run;
       workflow_run.name = run["name"].get<std::string>();
+      workflow_run.display_title = run["display_title"].get<std::string>();
       workflow_run.status = map_status(run["status"].get<std::string>(),
                                        run.value("conclusion", ""));
       workflow_run.updated_at =
